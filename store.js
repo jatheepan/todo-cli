@@ -17,15 +17,49 @@ class Store {
   set items( items ) {
     localStorage.setItem(KEY, JSON.stringify(items));
   }
-  save(item) {
+  save(title) {
     const items = this.items;
+    const item = {title: title};
     items.unshift(item);
     this.items = items;
     return item;
   }
+  update(id, newTitle) {
+    const items = this.items;
+    const index = id - 1;
+    const item = items[index];
+    if(!item) {
+      return null;
+    }
+    item.title = newTitle;
+    this.items = items;
+    return item;
+  }
+  delete(id) {
+    const items = this.items;
+    const index = id - 1;
+    const item = items[index];
+    if(!item) {
+      return null;
+    }
+    items.shift(index, 1);
+    this.items = items;
+  }
+  deleteAll() {
+    this.items = [];
+  }
+
   get list() {
+    let items = this.items;
+
+    items = items.map((item, index) => {
+      return {
+        id: index + 1,
+        title: item.title
+      };
+    })
     return {
-      items: this.items,
+      items: items,
       count: this.items.length
     };
   }

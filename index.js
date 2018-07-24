@@ -18,18 +18,29 @@ switch(cmd) {
     break;
 
   case 'save':
-    const item = store.save({Title: args.title});
-    console.log(item.Title, 'is saved');
+    if(!args.title) {
+      console.error('--title is missing');
+      process.exit();
+    }
+    const item = store.save(args.title);
+    console.log(item.title, 'is saved');
     break;
 
   case 'update':
+    if(!args.title || !args.id) {
+      console.error('--id and/or --title missing');
+      process.exit();
+    }
     const updatedItem = store.update(args.id, args.title);
-    console.log( updatedItem.Title, 'is updated.' );
+    console.log( updatedItem.title, 'is updated.' );
     break;
 
   case 'delete':
-    const deletedItem = store.delete(args.id);
-    console.log( deletedItem.Title, 'is deleted.' );
+    if(!args.id) {
+      console.error('--id is missing');
+      process.exit();
+    }
+    store.delete(args.id);
     break;
 
   case 'clear':
