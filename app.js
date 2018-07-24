@@ -10,11 +10,14 @@ if(!cmd) {
   process.exit();
 }
 
+function renderTable() {
+  const list = store.list;
+  console.table(list.items);
+  console.log('Total:', list.count);
+}
 switch(cmd) {
   case 'list':
-    const list = store.list;
-    console.table(list.items);
-    console.log('Total:', list.count);
+    renderTable();
     break;
 
   case 'save':
@@ -24,6 +27,7 @@ switch(cmd) {
     }
     const item = store.save(args.title);
     console.log(item.title, 'is saved');
+    renderTable();
     break;
 
   case 'update':
