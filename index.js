@@ -12,7 +12,7 @@ if(!cmd) {
 
 switch(cmd) {
   case 'list':
-    const list = store.list();
+    const list = store.list;
     console.table(list.items);
     console.log('Total:', list.count);
     break;

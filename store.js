@@ -2,6 +2,39 @@ const LocalStorage = (require( 'node-localstorage' )).LocalStorage;
 const localStorage = new LocalStorage( './db' );
 const KEY = 'items';
 
+
+class Store {
+  static instance() {
+    if(!this._instance) {
+      this._instance = new Store(KEY);
+    }
+    return this._instance;
+  }
+  get items() {
+    const items = localStorage.getItem(KEY);
+    return JSON.parse(items);
+  }
+  set items( items ) {
+    localStorage.setItem(KEY, JSON.stringify(items));
+  }
+  save(item) {
+    const items = this.items;
+    items.unshift(item);
+    this.items = items;
+    return item;
+  }
+  get list() {
+    return {
+      items: this.items,
+      count: this.items.length
+    };
+  }
+}
+
+module.exports = Store.instance();
+
+/*
+
 LocalStorage.prototype.__set__ = function( key, value ) {
   const items = JSON.stringify( value );
   this.setItem( key, items );
@@ -17,8 +50,7 @@ const getCollection = () => {
   }
   return localStorage;
 };
-
-module.exports = {
+module.exports.store = {
   _store: getCollection(),
 
   save(item) {
@@ -67,4 +99,4 @@ module.exports = {
   }
 }
 
-
+*/
